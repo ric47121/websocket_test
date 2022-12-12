@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<script>
+// https://www.youtube.com/watch?v=vBjfAmH67fg
+// https://es.javascript.info/websocket
+
+    // let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
+    // let socket = new WebSocket("ws://127.0.0.1:4055");
+
+    // var socket = WebSocket.connect("ws://192.168.0.107:8080/", protocols: ['echo-protocol']);
+
+    let socket = new WebSocket('ws://localhost:4055','echo-protocol');
+
+    // client.onmessage = function(e){
+    //     console.log(e.data);
+    //     let newElement = `<li>${e.data}</li>`;
+    //     document.querySelector("ul").innerHTML = newElement + document.querySelector("ul").innerHTML;
+    // }
+
+    // document.querySelector("#form").addEventListener("submit",(ev)=>{
+    //     ev.preventDefault();
+    //     let message = document.querySelector("#message").value;
+    //     client.send(message);
+    // })
+
+    socket.onopen = function(e) {
+    
+        // console.log("[open] Conexión establecida");
+        // console.log("Enviando al servidor");
+
+        socket.send("Mi nombre es rck");
+    };
+
+    socket.onmessage = function(event) {
+        console.log(`[message] Datos recibidos del servidor: ${event.data}`);
+    };
+
+    socket.onclose = function(event) {
+    if (event.wasClean) {
+        console.log(`[close] Conexión cerrada limpiamente, código=${event.code} motivo=${event.reason}`);
+    } else {
+        // ej. El proceso del servidor se detuvo o la red está caída
+        // event.code es usualmente 1006 en este caso
+        console.log('[close] La conexión se cayó');
+    }
+    };
+
+    socket.onerror = function(error) {
+        console.log(`[error]`);
+    };
+</script>
+
+</body>
+</html>
